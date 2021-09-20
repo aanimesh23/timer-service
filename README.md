@@ -6,6 +6,9 @@ A means of receiving your events at a configurable delay
 
 Timer service is a service that can be used in applications to get a message back to you at a particular time. These callbacks can be either in the form of an API callback or can also be an event produced in SQS or Kafka. An event is anything you want this service to send back to you, it could be a string message, a flag, or event an entire payload.
 
+## Blog
+[@Blog](https://medium.com/@aanimesh23/how-to-schedule-deliveries-of-events-with-a-configurable-time-98060e233238)
+
 ## Getting Started
 
 ### Dependencies
