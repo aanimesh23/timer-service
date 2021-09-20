@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/> <jmxConfigurator/>
+    <property name="OUTPUT_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS,IST}] [%-5p] [%-15.15t] [%-50.50c{50}:%5.5L] [%m]%n" />
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${OUTPUT_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.FileAppender">
+        <file>/var/log/ind-timer-service/timer-service.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>${OUTPUT_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <appender name="eventDailyRollingFileAppender" class="ch.qos.logback.core.FileAppender">
+        <file>/var/log/ind-timer-service/timer-events.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <logger name="eventLogger" level="DEBUG" additivity="false">
+        <appender-ref ref="eventDailyRollingFileAppender" />
+    </logger>
+
+
+    <!-- Configure the Sentry appender, overriding the logging threshold to the WARN level -->
+    <appender name="Sentry" class="io.sentry.logback.SentryAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        <!--        &lt;!&ndash; Optionally add an encoder &ndash;&gt;-->
+        <!--        <encoder>-->
+        <!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+        <!--        </encoder>-->
+    </appender>
+
+
+    <root>
+        <level value="INFO" />
+        <appender-ref ref="consoleAppender" />
+        <appender-ref ref="dailyRollingFileAppender" />
+        <appender-ref ref="Sentry" />
+    </root>
+
+</configuration>
